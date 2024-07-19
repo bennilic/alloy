@@ -1,6 +1,6 @@
 // https://grafana.com/docs/agent/latest/flow/concepts/config-language/files/
 
-component "my_component" {
+component "windows.my_component" {
     input "prometheus_secret"{
         type = "string"
     }
