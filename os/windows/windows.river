@@ -1,0 +1,3 @@
+// https://grafana.com/docs/agent/latest/flow/concepts/config-language/files/
+
+prometheus.exporter.windows "default" { }
