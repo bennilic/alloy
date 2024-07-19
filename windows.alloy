@@ -1,25 +1,25 @@
 // https://grafana.com/docs/agent/latest/flow/concepts/config-language/files/
 
-component "windows" {
-    input "prometheus_secret"{
-        type = "string"
-    }
+declare "config" {
+    argument "prometheus_secret" {}
 
-    prometheus.remote_write "metrics_service" {
-        endpoint {
-            url = "https://prometheus-prod-24-prod-eu-west-2.grafana.net/api/prom/push"
+    export output {
+        prometheus.remote_write "metrics_service" {
+            endpoint {
+                url = "https://prometheus-prod-24-prod-eu-west-2.grafana.net/api/prom/push"
 
-            basic_auth {
-            username = "1420639"
-            password = prometheus_secret
+                basic_auth {
+                username = "1420639"
+                password = argument.prometheus_secret.value
+                }
             }
         }
-    }
 
-    prometheus.exporter.windows "default" { }
+        prometheus.exporter.windows "default" { }
 
-    prometheus.scrape "example" {
-        targets    = prometheus.exporter.windows.default.targets
-        forward_to = [prometheus.remote_write.metrics_service.receiver]
+        prometheus.scrape "example" {
+            targets    = prometheus.exporter.windows.default.targets
+            forward_to = [prometheus.remote_write.metrics_service.receiver]
+        }
     }
 }
